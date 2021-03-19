@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+org.eclipse.eclemma.ui.auto_remove_sessions=true
+org.eclipse.eclemma.ui.reset_on_dump=true

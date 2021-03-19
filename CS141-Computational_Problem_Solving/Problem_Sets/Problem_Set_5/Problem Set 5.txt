@@ -1,0 +1,25 @@
+C:\Users\conno\Documents\Computational_Problem_Solving
+1) self.__desks = [['','','',],['','','',],['','','',],['','','',],['','','',]]
+2a)
+def __is_full(self):
+	for place in self.__desks:
+		for spot in place:
+			if spot == '':
+				return False
+		return True
+
+2b) mousePressEvent
+2c)
+if self.__is_full() == False:
+	if 0 <= row < ROWS and 0 <= col < SEATS:
+
+
+3)
+if self.__desks[row][col] == '':
+After:
+name,ok = QInputDialog.getText(self, 'Add a guest', 'Enter name:')
+
+4)
+if (char=='a' and char=='e' and char=='i' and char=='o' and char=='u'):
+to
+if (char=='a' or char=='e' or char=='i' or char=='o' or char=='u'):

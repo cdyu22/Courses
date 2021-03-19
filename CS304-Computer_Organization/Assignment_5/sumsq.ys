@@ -1,0 +1,41 @@
+.pos 0
+           irmovl   $0,  %esi    # Sum, the value we store in memory
+           irmovl   $0,  %ebx    # Outer, the outermost loop's integer
+           irmovl   $0,  %ecx    # Middle, the integer of the second loop out
+           irmovl   $0,  %edx    # Inner, the innermost loop's integer
+           irmovl $140,  %edi    # The offset, starts at 140 to avoid rewriting
+
+outer:     irmovl   $1,  %eax    # tmp = 1, prepare for incrementation
+           addl   %eax,  %ebx    # Outer++, increment outer
+           irmovl   $0,  %ecx    # Middle = 0
+           irmovl   $0,  %edx    # Inner = 0
+           irmovl   $0,  %esi    # Sum = 0
+
+middle:    irmovl   $1,  %eax    # tmp = 1, perpare for incrementation
+           addl   %eax,  %ecx    # Middle++
+           irmovl   $0,  %edx    # Inner = 0
+
+inner:     irmovl   $1,  %eax    # tmp = 1, prepare for incrementation
+           addl   %eax,  %edx    # Inner++, increment inner
+           addl   %ecx,  %esi    # Sum = Sum + Middle
+           rrmovl %ecx,  %eax    # Store Middle in tmp
+           subl   %edx,  %eax    # tmp = tmp - Inner
+           jne inner             # Jump if tmp(Inner) doesn't equal Middle
+
+           rrmovl %ebx,  %eax    # tmp = Outer, prepare for if statement
+           subl   %ecx,  %eax    # tmp = tmp - Middle
+           jne middle            # Jump if tmp(Outer) doesn't equal Middle
+
+           rmmovl %esi, (%edi)   # arr[Outer] = Sum, store sum in memory
+           irmovl   $4,  %eax    # Prepare to increment offset by 4
+           addl   %eax,  %edi    # Increment offset by 4
+
+           #CHANGE THIS TO TEST OTHER SUMSQ VALUES APART FROM 10
+           irmovl  $21,  %eax    # Store 10 (amount of loops) in tmp
+           subl   %ebx,  %eax    # tmp = 10 - Outer
+           jne outer             # Jump if tmp(Outer) is not equal to 10
+
+           halt
+
+.align 4
+arr:

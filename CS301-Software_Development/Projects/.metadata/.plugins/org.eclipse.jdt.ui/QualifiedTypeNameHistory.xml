@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.util.Arrays"/>
+    <fullyQualifiedTypeName name="gui.StateGenerating"/>
+    <fullyQualifiedTypeName name="gui.OrderStub"/>
+    <fullyQualifiedTypeName name="generation.MazeContainer"/>
+    <fullyQualifiedTypeName name="gui.DefaultState"/>
+    <fullyQualifiedTypeName name="generation.Maze"/>
+    <fullyQualifiedTypeName name="generation.Floorplan"/>
+    <fullyQualifiedTypeName name="gui.Constants.UserInput"/>
+    <fullyQualifiedTypeName name="gui.Robot.Direction"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="generation.Order.Builder"/>
+    <fullyQualifiedTypeName name="generation.CardinalDirection"/>
+    <fullyQualifiedTypeName name="gui.Robot.Turn"/>
+    <fullyQualifiedTypeName name="java.lang.Double"/>
+    <fullyQualifiedTypeName name="java.lang.Thread"/>
+</qualifiedTypeNameHistroy>

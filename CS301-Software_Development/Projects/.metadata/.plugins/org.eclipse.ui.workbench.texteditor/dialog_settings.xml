@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="switchFrom"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="switchfrom"/>
+			<item value="config"/>
+			<item value="xplaced"/>
+			<item value="turnoff"/>
+			<item value="room"/>
+			<item value="redraw"/>
+			<item value="started"/>
+			<item value="switch"/>
+			<item value="order"/>
+			<item value="deliver"/>
+			<item value="delivery"/>
+			<item value="getmaze"/>
+			<item value="robot"/>
+			<item value="drawbackground"/>
+			<item value="updateprogress"/>
+		</list>
+		<list key="replacehistory">
+			<item value="wizard"/>
+			<item value="wallFlower"/>
+			<item value="floorPlan"/>
+			<item value=" floorPlan"/>
+			<item value="getSkillLevel"/>
+			<item value="setSkillLevel"/>
+			<item value="skillLevel"/>
+			<item value="isPerfect"/>
+			<item value="setPerfect"/>
+			<item value="perfect"/>
+			<item value="builderTest"/>
+			<item value="fakeOrder"/>
+			<item value="mazeMaker"/>
+			<item value="mazeHolder"/>
+			<item value="checkAllSame"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="1420"/>
+		<item key="DIALOG_Y_ORIGIN" value="364"/>
+		<item key="DIALOG_WIDTH" value="336"/>
+		<item key="DIALOG_HEIGHT" value="454"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+</section>

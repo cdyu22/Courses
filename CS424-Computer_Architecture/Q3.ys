@@ -1,0 +1,20 @@
+diff: 
+      addiu $sp, $sp, -4
+      sw    $s0, 0($sp)
+      sw    __,  4($sp)
+      
+      slt   $t1, $a0,   $a1 # if a < b: t=1;t=0
+      bne   $t1, $zero, fac # Branch if a < b
+      sub   $a0, $a1,   $a0 # a =  b - a
+      _   # I think it is beq $t1, $zero, ELSE
+      j     EXIT
+      
+ELSE:
+      sub   $a0, $a0, $a1   # a = a - b
+      # i think it is j fac
+
+EXIT:
+      lw    $s0, 0($sp)
+      _
+      addiu $sp, $sp, 4
+      _

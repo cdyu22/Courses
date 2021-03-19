@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;input1.xml&apos; to &apos;MazebyConnorYu/test/data&apos;&#x0D;&#x0A;- Original project: &apos;MazebyConnorYu&apos;&#x0D;&#x0A;- Destination element: &apos;MazebyConnorYu/test/data&apos;&#x0D;&#x0A;- Original element: &apos;input1.xml&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move file" destination="/test&lt;data" element1="input1.xml" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1596249499174" units="0" version="1.0"/>
+</session>

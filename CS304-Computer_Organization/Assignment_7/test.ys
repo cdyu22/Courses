@@ -1,0 +1,32 @@
+# assume x in %edi, y in %esi, and z in %edx
+.pos 0x100
+
+test:  rrmovl %edi, %eax  #val = x
+       irmovl $1,   %ebx
+       subl   %ebx, %eax  #val--
+       rrmovl %edi, %ebx  #tmp = x
+       addl   %edx, %ebx  #tmp += z
+       subl   %esi, %ebx  #tmp -= y
+       jge L1             #If last result >= 0
+
+       irmovl $2,   %ebx  #tmp = 2
+       subl   %edx, %ebx  #tmp -= z
+       jg L2              #If last result > 0
+
+       #GETS HERE IT'S OVER
+       rrmovl %esi, %ebx  #tmp = y
+       addl   %esi, %ebx  #tmp += y
+       addl   %ebx, %eax  #val += tmp
+       jmp L4             #Jump to L4
+
+       #GETS HERE IT'S OVER
+L2:    subl   %edi, %eax  #val -= x
+       jmp L4             #Jump to L4
+
+L1:    rrmovl %esi, %ebx  #tmp = y
+       addl   %edx, %ebx  #tmp += z
+       subl   %edi, %ebx  #tmp -= x
+       jge L4             #If last result >= 0
+       addl   %edx, %eax  #val += z
+
+L4:    ret

@@ -1,0 +1,18 @@
+0x000:
+0x000: irmovl feax00000000
+0x006: irmovl fecx01000000
+
+0x00c:
+0x00c: irmovl fedi01000000
+0x012: andl ecx edi
+0x014: je1b000000
+0x019: addl ecx eax
+
+0x01b:
+0x01b: irmovl edx01000000
+0x021: addl edx ecx
+0x023: irmovl edx64000000
+0x029: subl ecx edx
+0x02b: jge 0c000000
+
+0x0irmovl : 00

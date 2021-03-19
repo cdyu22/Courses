@@ -1,0 +1,220 @@
+.pos 0x0
+
+main:
+    irmovl stack,  %esp    # set stack ptr
+    irmovl input,  %esi    # input
+    irmovl output, %edi    # output
+
+mainloop:
+    mrmovl (%esi), %ecx   # %ecx holds values from input
+    rrmovl %ecx, %eax
+
+    irmovl $0, %edx       # get ready to test value for 0
+    addl   %edx, %ecx     # add just to set condition codes
+    je     end            # val == 0, so we're done
+
+    #STORE ORIGINAL
+    rmmovl %ecx, (%edi)   #Store it in memory
+    irmovl $4, %edx
+    addl %edx, %edi
+
+    #CALLING ABSOLUTE
+    pushl  %ecx           # push argument
+    call   abs
+    irmovl $4, %edx
+    addl %edx, %esp
+
+    #STORE ABSOLUTE
+    rmmovl %ecx, (%edi)   # store return value
+    irmovl $4, %edx
+    addl %edx, %edi
+
+    #CALL MULTIPLY
+    pushl %ecx
+    pushl %ecx  #VARIABLE X
+    call    mult
+    popl %ecx
+    popl %ecx
+    rrmovl %edx, %ebx
+
+    #STORE MULTIPLY
+    #IS IT FINE TO GRAB DIRECTLY FROM EDX
+    rmmovl %edx, (%edi)   # store return value
+    irmovl $4, %edx
+    addl %edx, %edi
+
+    #CALL CUBE
+    pushl %ebx
+    pushl %ecx
+    call mult
+    popl %ecx
+    popl %ebx
+
+    #STORE CUBE
+    rmmovl %edx, (%edi)   # store return value
+    irmovl $4, %edx
+    addl %edx, %edi
+
+    #CALL FACTORIAL
+    pushl %ecx
+    call rfact
+    popl %ecx
+
+    #STORE FACTORIAL
+    rmmovl %edx, (%edi)   # store return value
+    irmovl $4, %edx
+    addl %edx, %edi
+
+    #STATUS BYTE STUFF
+    irmovl $0, %ebx
+
+   irmovl $0x1, %edx     # get ready to test value for odd
+   andl   %ecx, %edx     # if lsb bit is 1, value is odd
+   je    even            # otherwise even
+
+
+    irmovl $1, %edx
+    addl %edx, %ebx
+
+even:
+
+    irmovl $0, %edx
+    addl %edx, %eax
+    jge over
+
+    irmovl $2, %edx
+    addl %edx, %ebx
+
+over:
+
+    mrmovl -4(%edi), %eax
+    mrmovl -12(%edi), %edx
+    subl %eax, %edx
+    jge oversquare
+
+    irmovl $4, %edx
+    addl %edx, %ebx
+
+oversquare:
+
+    mrmovl -8(%edi), %edx
+    subl %eax, %edx
+    jge overcube
+    irmovl $8, %edx
+    addl %edx, %ebx
+
+overcube:
+
+    #STORE BYTE
+    rmmovl %ebx, (%edi)   # store return value
+    irmovl $4, %edx
+    addl %edx, %edi
+
+    #INCREMENT INPUT
+    addl %edx, %esi
+    jmp mainloop
+
+end:
+    halt
+
+
+
+
+
+abs:
+    pushl  %ebp           # prologue
+    rrmovl %esp, %ebp
+    pushl  %edi           # save %edi value -- we're going to use it
+    mrmovl 8(%ebp), %edi  # val = param
+
+    irmovl $0, %ebx
+    addl %ebx, %edi
+    jge more
+
+    rrmovl %ebx, %ecx
+    subl   %edi, %ecx
+
+more:
+    popl   %edi           # restore value
+    popl   %ebp           # epilogue
+    ret
+
+
+
+
+
+mult:
+    pushl  %ebp           # prologue
+    rrmovl %esp, %ebp
+    pushl  %edi           # save %edi value -- we're going to use it
+    pushl %esi
+    mrmovl 8(%ebp), %edi  # VARIABLE X
+    mrmovl 12(%ebp), %esi   #VARIABLE Y
+
+    irmovl $0, %ecx #i = 0
+    irmovl $0, %edx #val = 0
+
+mloop:
+    #RESULT IS STORED IN EDX
+    addl %edi, %edx
+    irmovl $1, %ebx
+    addl %ebx, %ecx
+
+    rrmovl %ecx, %ebx
+    subl %esi, %ebx
+    jl mloop
+
+    popl %esi
+    popl   %edi           # restore value
+    popl   %ebp           # epilogue
+    ret
+
+
+
+
+
+rfact:
+    pushl  %ebp           # prologue
+    rrmovl %esp, %ebp
+    mrmovl 8(%ebp), %ecx  # val = param
+    pushl %ecx
+
+    irmovl $1, %ebx
+    subl %ebx, %ecx
+
+    pushl %ecx
+
+    je base
+
+    call rfact
+    popl %ecx
+    popl %ecx
+
+    pushl %ecx
+    pushl %edx
+    call mult
+    popl %ecx
+    popl %ecx
+    jmp recursive
+
+base:
+    popl %ecx
+    popl %ecx
+    irmovl $1, %edx
+
+recursive:
+    popl   %ebp           # epilogue
+    ret
+
+.align 4
+
+input:
+    .long -3
+    .long -10
+    .long 7
+    .long 0
+
+output:
+
+    .pos 0x400
+stack:

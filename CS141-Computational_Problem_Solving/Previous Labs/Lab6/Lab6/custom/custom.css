@@ -1,0 +1,115 @@
+ <style>
+/* Official W&M colors (http://styleguide.wm.edu/university-colors/)
+   - green: #115740 / R 17  G 87  B 64
+   - gold:  #B9975B
+   - spirit gold: #F0B323
+   - silver: #D0D3D4 */
+
+.try_it {
+    color: black;
+    /*background: rgb(51, 255, 192);*/
+    /*background: #00FF00;*/
+    background: #CCFFCC;
+    padding: 4px;
+}
+
+/* A CSS class for exercises. */
+.exercise {
+    color: black;
+    background: #99FFFF;
+    padding: 4px;
+}
+.exercise code {
+    background: inherit;
+}
+.exercise pre {
+    background: inherit;
+}
+
+/* A CSS class for hiding text.
+   Hide text such as answers by the simple expedient of making white text on a white background. 
+   Hovering on the text with the mouse reveals the text by making it black.  I have tried the CSS 
+   visibility property, but it does not seem to work in Jupyter.*/
+.voila {
+    color: white;
+    background: white;
+    border: 1px dotted #115750;
+    padding: 4px;
+}
+.voila:hover {
+    color: black;
+}
+.voila pre {
+    color: inherit;
+}
+.voila code {
+    color: inherit;
+}
+.voila a {
+    color: inherit;
+}
+.voila blockquote {
+    border-left: white;
+}
+.voila:hover blockquote {
+    border-left: 5px solid #7F1315;
+}
+
+.text_cell_render code {
+    font-weight: bold;
+    background: inherit;
+    color: inherit;
+}
+
+code.kw {
+    font-weight: bold;
+    color: green;
+}
+
+code.error {
+    font-weight: bold;
+    color: red;
+    background: inherit;
+}
+
+.try_it code {
+    color: inherit;
+    background: inherit;
+    font-weight: bold;
+}
+
+div.cell {
+    margin-left: 0% !important;
+    margin-right: auto;
+}
+
+.text_cell_render h1 {
+    color: #115750;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.text_cell_render h2 {
+    color: #115750;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.text_cell_render h3 {
+    color: #115750;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.text_cell_render h4 {
+    color: #115750;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.text_cell_render h5 {
+    color: #115750;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+</style>

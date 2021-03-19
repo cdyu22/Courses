@@ -1,0 +1,118 @@
+package generation;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+
+public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
+	public MazeBuilderKruskal() {
+		super();
+		System.out.println("MazeBuilderKruskal uses Kruskal's algorithm to generate maze.");
+	}
+	public MazeBuilderKruskal(boolean det) {
+		super(det);
+		System.out.println("MazeBuilderKruskal uses Kruskal's algorithm to generate maze.");
+	}
+	
+	@Override
+	protected void generatePathways() {
+		/*
+		 * Generate a 2-dimensional array, with the first array being the width (x)
+		 * of the maze, and the inner, second array representing the height (y) of the maze.
+		 * We then fill that up with with values, with the first, (0,0) cell having 0,
+		 * (0,1) having the integer 1, and so on and so forth.
+		 * 
+		 * We then run a loop. 
+		 * We pick a random cell and a random direction, We then look at the WallBoard that cell is 
+		 * pointing to with its direction, and see if we can tear it down. If we can't, we start the 
+		 * loop again. 
+		 * 
+		 * If it is possible to tear it down, we get the (x,y) coordinates of the cell that our original 
+		 * cell is pointing towards. We check if the values in the two-dimensional array are the same. 
+		 * If they are,then nothing happens. If they're different, we delete the WallBoard, set the value
+		 * of the neighboring cell to that of the original cell, and loop through the two-dimensional array,
+		 * checking to see if all of the values in the two-dimensional array are the same, if they are,then 
+		 * every cell is in the same set. And we end the loop.
+		 * 
+		 * At the very beginning, before we implement rooms for Kruskal, we override MazeBuilder's
+		 * generateRooms() to always return 0. Once the algorithm works for the original, we need to
+		 *  treat the rooms as one cell. We can do this by looping through at the beginning of the
+		 *  two-dimensional array construction, and if no WallBoards detected at that point, then give
+		 *  them the same number.
+		 */
+		int x1; int y1; int x2; int y2;
+		CardinalDirection cdd = CardinalDirection.North;
+		int[][] cells = new int[width][height];
+	
+		int counter = 0;
+		for (int i = 0; i < width; i++) 
+			for (int j=0; j<height;j++) {
+				cells[i][j] = counter;
+				counter++;
+			}
+	
+		
+		if (!order.isPerfect()) {
+			System.out.println("Starting PERFECTION");
+			Wallboard wallboard = new Wallboard(0, 0, cdd);
+			for (int i = 0; i < width; i++) 
+				for (int j=0; j<height;j++) 
+					for (CardinalDirection cd : CardinalDirection.values()) {
+						wallboard.setLocationDirection(i, j, cd);
+						if (floorplan.hasNoWall(i,j,cd)) 
+						{
+							x1 = wallboard.getNeighborX();
+							y1 = wallboard.getNeighborY();
+							cells[x1][y1] = cells[i][j];
+						}
+					}
+		}
+		
+	 
+		while (!checkVisited(cells)) {
+			x1 = random.nextIntWithinInterval(0, width-1);
+			y1 = random.nextIntWithinInterval(0, height-1);
+			cdd = cdd.randomDirection();
+			
+			Wallboard wallboard = new Wallboard(x1, y1, cdd);
+			if (!floorplan.canTearDown(wallboard))
+				continue;
+			
+			
+			x2 = wallboard.getNeighborX();
+			y2 = wallboard.getNeighborY();
+		
+			if (cells[x1][y1] == cells[x2][y2]) 
+				continue;
+			System.out.println(Arrays.deepToString(cells));
+			floorplan.deleteWallboard(wallboard);	
+			//floorplan.setCellAsVisited(x1, y1);
+			int val = cells[x1][y1];
+			int replace = cells[x2][y2];
+			
+			for (int j=0; j < width; j++) 
+				for (int k=0; k<height;k++) {
+					if (cells[j][k] == replace)
+						cells[j][k] = val;
+				}
+		}
+	}
+	
+	private boolean checkVisited(int[][] visited) {
+		int val = visited[0][0];
+		for (int l = 0; l<width;l++)
+			for (int i=0;i<height;i++)
+				if (visited[l][i] != val)
+					return false;
+		System.out.println("Got to end");
+		return true;
+	}
+	
+	/*
+	@Override
+	protected int generateRooms() {
+		return 0; 
+	}
+	*/
+			
+}

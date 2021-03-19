@@ -1,0 +1,41 @@
+.pos 0
+           irmovl $0, %eax  # val
+           irmovl $0, %ecx  # i
+           irmovl $0, %edx  # p
+           irmovl $0, %ebx  # r
+           irmovl $0, %esi # offset
+
+iloop:
+           irmovl $1, %edi  # edi = 1
+           addl %edi, %ecx  # i += 1
+           irmovl $0, %edx  # p = 0
+           irmovl $0, %ebx  # r = 0
+           irmovl $0, %eax  # val set to 0
+
+ploop:
+           irmovl $1, %edi
+           addl %edi, %edx  # p++
+           irmovl $0, %ebx  # r=0
+           # SOME SORT OF LOOP
+
+rloop:
+           irmovl $1, %edi
+           addl %edi, %ebx  # r++
+           addl %edx, %eax  # val += p
+           rrmovl %edx, %edi  # temp = p
+           subl %ebx, %edi
+           jne rloop# jump greater equal 0 (when r <= p)
+           rrmovl %ecx, %edi # tmp = i
+           subl %edx, %edi
+           jne ploop # (when p <= i)
+           rmmovl %eax, (%esi)
+           irmovl $4, %edi
+           addl %edi, %esi
+           irmovl $10, %edi
+           subl %ecx, %edi
+           jne iloop
+
+           halt
+
+.align 12
+arr:

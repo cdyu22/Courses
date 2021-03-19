@@ -1,0 +1,32 @@
+# assume x in 7, y in 6, and z in 2
+.pos 0x100
+
+test:  20 7, 0  #val = x
+       30 $1,   3
+       61   3, 0  #val--
+       20 7, 3  #tmp = x
+       60   2, 3  #tmp += z
+       61   6, 3  #tmp -= y
+       jge L1             #If last result >= 0
+
+       30 $2,   3  #tmp = 2
+       61   2, 3  #tmp -= z
+       jg L2              #If last result > 0
+
+       #GETS HERE IT'S OVER
+       20 6, 3  #tmp = y
+       60   6, 3  #tmp += y
+       60   3, 0  #val += tmp
+       jmp L4             #Jump to L4
+
+       #GETS HERE IT'S OVER
+L2:    61   7, 0  #val -= x
+       jmp L4             #Jump to L4
+
+L1:    20 6, 3  #tmp = y
+       60   2, 3  #tmp += z
+       61   7, 3  #tmp -= x
+       jge L4             #If last result >= 0
+       60   2, 0  #val += z
+
+L4:    ret

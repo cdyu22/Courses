@@ -1,0 +1,53 @@
+# int fib(int n): return n < 2 ? n : fib(n-1) + fib(n-2)
+
+fib: 
+    addi $sp, $sp, -8      # room for $ra and one temporary
+    # Add immediate value A to stack pointer
+    # A IS THE VALUE TO INCREMENT STACK POINTER
+
+    sw   $ra, 4($sp)      # save $ra (return address)
+    # Store ra in B + Stack Pointer value in memory
+
+    move $v0, $a0         # preload return value as n
+    # MOVE
+
+    blt  $a0, 2,   fib_rt # if(n < 2) return n
+
+    sw   $a0, 0($sp)      # save a copy of n
+    addi $a0, $a0, -1     # n - 1
+    jal  fib              # fib(n - 1)
+
+    lw   $a0, 0($sp)      # retrieve n
+    sw   $v0, 0($sp)      # save result of fib(n - 1)
+    addi $a0, $a0, -2     # n - 2
+    jal  fib              # fib(n - 2)
+
+    lw   $v1, 0($sp)      # retrieve fib(n - 1)
+    add  $v0, $v0, $v1    # fib(n - 1) + fib(n - 2)
+
+fib_rt: 
+    lw   $ra, 4($sp)      # restore $ra
+    addi $sp, $sp, 8      # restore $sp
+    jr   $ra              # back to caller
+
+# Interesting registers:
+# sp = Stack Pointer: Last program request 
+
+
+############################################
+#t0 = A
+#t1 = B
+#t2 = 0
+nor $t3, $t0, $t2 #t3 = not (t0 | t2)
+# After this, t3 = not A
+
+and $t3, $t3, $t1 #t3 = t3 & t1
+# t3 = (not A) and B
+
+nor $t4, $t1, $t2 #t4 = not (t1 | t2)
+# t4 = not B
+
+and $t4, $t4, $t0 #t4 = t4 & t0
+# t4 = (not B) and A
+
+or  $t4, $t4, $t3 #t4 = t4 | t3

@@ -1,0 +1,225 @@
+.pos 0x0
+
+#by Connor Yu
+#due 11/13/2020
+#A program to output various facts about numbers (square, cube, factorial, etc)
+
+    #################################### Setup #################################
+    irmovl stack,  %esp    # Setting up the stack pointer
+    irmovl input,  %esi    # Setting up the space for the input array
+    irmovl output, %edi    # Setting up the where to overwrite in memory
+
+################################### Main Loop ##################################
+mainloop:
+    mrmovl (%esi), %ecx   # %ecx holds values from input, grab one
+    rrmovl  %ecx,  %eax
+
+    irmovl  $0,    %edx   # Move zero into edx
+    addl    %edx,  %ecx   # Add zero, just to set conditional
+    je      end           # If val is 0, we're done
+
+    #Write the original to memory
+    rmmovl  %ecx, (%edi)  # Store it in memory
+    irmovl  $4,    %edx   # Store 4 in edx
+    addl    %edx,  %edi   # Then increment the input by 4
+
+    #Calling Absolute value function
+    pushl   %ecx          # Push ecx as the argument
+    call     abs          # Then call abs
+    irmovl  $4,    %edx
+    addl    %edx,  %esp   # No pop, ecx now holds absolute value, move esp up 4
+
+    #Writing Absolute to Memory
+    rmmovl  %ecx, (%edi)  # Write the value in ecx to memory
+    irmovl  $4,    %edx
+    addl    %edx,  %edi   # Increment the output array
+
+    #Calling Multiply Function (Square)
+    pushl   %ecx          # Push ecx twice as an argument
+    pushl   %ecx
+    call    mult
+    popl    %ecx          # Pop off ecx twice
+    popl    %ecx
+    rrmovl  %edx,  %ebx   # Let ebx hold the square (To calculate cube later)
+
+    #Writing Square to memory
+    rmmovl  %edx, (%edi)   # Write the value (square) in edx to memory
+    irmovl  $4,    %edx
+    addl    %edx,  %edi    # Increment edx by 4
+
+    #Calling Multiply Function (Cube)
+    pushl   %ebx           # Push the square as a parameter
+    pushl   %ecx           # Push the number as a parameter
+    call     mult
+    popl    %ecx
+    popl    %ebx           # Pop both of them off
+
+    #Writing Cube to Memory
+    rmmovl  %edx, (%edi)   # Write the value (cube) in edx to memory
+    irmovl  $4,    %edx
+    addl    %edx,  %edi    # Increment the output
+
+    #Calling Factorial
+    pushl   %ecx           # Push ecx onto the stack as a parameter
+    call     rfact
+    popl    %ecx           # Pop it off to keep stack aligned
+
+    #Writing Factorial to memory
+    rmmovl  %edx, (%edi)   # Write value at edx (factorial) to memory
+    irmovl  $4,    %edx
+    addl    %edx,  %edi    # Increment output location
+
+    ############################## Status Byte #################################
+    irmovl  $0,    %ebx    # ebx will serve as the status byte
+
+    # Adding 1 if odd
+    irmovl  $1,    %edx    # Checking to see if the value is odd
+    andl    %ecx,  %edx    # andl ecx with edx
+    je      even           # Jumping if it is even
+
+    irmovl  $1,    %edx    # If it isn't it add 1 to status byte
+    addl    %edx,  %ebx
+
+even:
+
+    # Adding 2 if negative
+    irmovl  $0,    %edx    # Similar to absolute, put 0 in edx
+    addl    %edx,  %eax    # Add that to edx
+    jge      over          # Jump if it is over 0
+
+    irmovl  $2,    %edx    # If it's negative, add 2 to status byte
+    addl    %edx,  %ebx
+
+over:
+
+    # Adding 4 if factorial is greater than Square
+    mrmovl -4(%edi),  %eax # Retrieve factorial from memory (eax)
+    mrmovl -12(%edi), %edx # Retrieve square from memory (edx)
+    subl    %eax,     %edx # Subtract factorial from square
+    jge     oversquare     # Jump if it greater than 0
+
+    irmovl  $4,    %edx    # If it hasn't jumped, add 4 to status byte
+    addl    %edx,  %ebx
+
+oversquare:
+
+    # Adding 8 if factorial is greater than cube
+    mrmovl -8(%edi),  %edx # Retrieve cube from memory (factorial still in eax)
+    subl    %eax,     %edx # Subtract factorial from cube
+    jge     overcube       # Jump if result is greater than 0
+
+    irmovl  $8,       %edx # If it hasn't jumped, add 8 to status byte
+    addl    %edx,     %ebx
+
+overcube:
+
+    #Writing the Status byte to memory
+    rmmovl  %ebx, (%edi)   # Write ebx (status byte) to memory
+    irmovl  $4,    %edx
+    addl    %edx,  %edi    # Increment the output location
+
+    #Incrementing Input
+    addl    %edx,  %esi    # Add 4 (edx) to the input location
+    jmp      mainloop      # Jump to mainloop, start it all over again
+
+
+# Will jump here if value is 0, program is over
+end:
+    halt
+
+
+################################## Functions ###################################
+# ABSOLUTE VALUE FUNCTION
+abs:
+    pushl   %ebp           # prologue
+    rrmovl  %esp,     %ebp
+    pushl   %edi           # Save edi value in stack
+    mrmovl  8(%ebp),  %edi # Store parameter in edi
+
+    irmovl  $0,    %ebx    # Put 0 in ebx
+    addl    %ebx,  %edi    # Add it to the parameter
+    jge      positive          # Jump if it's greater than 0, we're already done
+
+    rrmovl  %ebx,  %ecx    # If it's not, put 0 in ecx
+    subl    %edi,  %ecx    # And subtract the negative value, giving positive
+
+positive:
+
+    popl    %edi           # Restore edi's value
+    popl    %ebp           # epilogue
+    ret
+
+# MULTIPLICATION FUNCTION
+mult:
+    pushl   %ebp           # prologue
+    rrmovl  %esp,     %ebp
+    pushl   %edi           # Save edi value in stack
+    pushl   %esi
+    mrmovl  8(%ebp),  %edi # Get the first parameter from memory
+    mrmovl  12(%ebp), %esi # Get the second parameter from memory
+
+    irmovl  $0,  %ecx      # i = 0
+    irmovl  $0,  %edx      # val = 0
+
+MultLoop:
+
+    addl    %edi,  %edx    # val += x
+    irmovl  $1,    %ebx
+    addl    %ebx,  %ecx    # i++
+
+    rrmovl  %ecx,  %ebx
+    subl    %esi,  %ebx    # jump if (i < y)
+    jl       MultLoop
+
+    popl    %esi           # Pop off all of the values in the stack
+    popl    %edi
+    popl    %ebp           # epilogue
+    ret
+
+# FACTORIAL FUNCTION
+rfact:
+    pushl   %ebp           # prologue
+    rrmovl  %esp,     %ebp
+    mrmovl  8(%ebp),  %ecx # Store the parameter in ecx
+    pushl   %ecx           # Push the current ecx onto the stack
+
+    irmovl  $1,   %ebx     # Decrement ecx
+    subl    %ebx, %ecx
+
+    pushl   %ecx           # Push it again (to keep track of activation records)
+
+    je       base          # Jump if it's equal to 0 at this point (base case)
+
+    call     rfact         # If you don't jump, recurse
+    popl    %ecx           # Pop off to the two values and store it in ecx
+    popl    %ecx           # Just holds first value in ecx, second is to track
+
+    pushl   %ecx           # Push ecx as a parameter
+    pushl   %edx           # Push the value in edx as a parameter
+    call     mult          # Return value stored in edx
+    popl    %ecx           # Pop off two to keep stack aligned
+    popl    %ecx
+    jmp      recursive     # Skip the base case
+
+base:
+    popl    %ecx            # If it is base case, just pop off both pushes
+    popl    %ecx
+    irmovl  $1,  %edx       # Store 1 in edx, will hold our parameter
+
+recursive:
+    popl    %ebp            # epilogue
+    ret
+
+    .align 4
+
+input:
+    .long -3
+    .long -10
+    .long 7
+    .long 0
+
+    .pos 0x200
+output:
+
+    .pos 0x400
+stack:

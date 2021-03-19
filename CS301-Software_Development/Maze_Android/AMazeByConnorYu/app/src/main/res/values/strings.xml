@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">My Amazing App</string>
+
+    <!--AMazeActivity-->
+    <string name ="TAGACT1">AMazeActivity</string>
+    <string name="mazeIntro">Welcome to my Maze</string>
+    <string name="revisitCommand">Revisit</string>
+    <string name="generateCommand">Generate</string>
+    <string name="skill">Skill Level:\u0020</string>
+    <string name="skillDefault">Skill Level: 0</string>
+    <string name="generator">Maze Generator</string>
+    <string name="driver">Maze Driver</string>
+
+    <string-array name="builder">
+        <item>Default</item>
+        <item>Prim</item>
+        <item>Kruskal</item>
+    </string-array>
+
+    <string-array name="driver">
+        <item>Manual</item>
+        <item>WallFollower</item>
+        <item>Wizard</item>
+    </string-array>
+
+    <!--GeneratingActivity-->
+    <string name ="TAGACT2">GeneratingActivity</string>
+    <string name="generateScreen">Generating</string>
+
+    <!--Play-->
+    <string name="fullMaze">Toggle Maze Layout</string>
+    <string name="solution">Toggle Solution</string>
+    <string name="walls">Toggle Walls</string>
+
+    <!--PlayManuallyActivity-->
+    <string name ="TAGACT3">PlayManuallyActivity</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+    <string name="forward">Forward</string>
+
+    <!--PlayAnimationActivity-->
+    <string name ="TAGACT4">PlayAnimationActivity</string>
+    <string name="energyLeft">Energy Remaining: \u0020</string>
+    <string name="pathLength">Steps Taken: \u0020</string>
+
+    <!--FinishActivity-->
+    <string name ="TAGACT5">FinishActivity</string>
+    <string name ="caseWon">YOU WON!</string>
+    <string name ="caseLost">YOU LOST</string>
+    <string name="returnToTitle">Return to Title </string>
+    <string name="totalSteps">Total Steps Taken:\u0020</string>
+    <string name="finalEnergy">Final Energy Level:\u0020</string>
+
+    <!--Keys for Retrieving Values-->
+    <string name ="builderKey">BUILDER_VALUE</string>
+    <string name ="driverKey">DRIVER_VALUE</string>
+    <string name ="skillKey">SKILL_VALUE</string>
+    <string name ="winKey">WIN_OR_LOSE</string>
+    <string name ="energyKey">ENERGY_LEFT</string>
+    <string name ="pathKey">PATHLENGTH</string>
+    <string name="generationKey">GENERATION</string>
+
+
+</resources>
